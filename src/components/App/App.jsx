@@ -11,6 +11,22 @@ export class App extends Component {
     filter: '',
   };
 
+  componentDidMount() {
+    const localContacts = localStorage.getItem('contacts');
+
+    if (!localContacts) {
+      localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
+    } else {
+      this.setState({ contacts: JSON.parse(localStorage.getItem('contacts')) });
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.contacts !== this.state.contacts) {
+      localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
+    }
+  }
+
   handleSearch = ({ currentTarget: { value } }) =>
     this.setState({ filter: value });
 
